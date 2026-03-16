@@ -100,34 +100,112 @@ struct UsageTimelineProvider: TimelineProvider {
     }
 }
 
+// MARK: - Pixel Art Claude Mascot
+
+struct ClaudeMascot: View {
+    let pixelSize: CGFloat
+
+    private let bodyColour = Color(red: 0.80, green: 0.55, blue: 0.40)
+    private let darkColour = Color(red: 0.20, green: 0.15, blue: 0.12)
+
+    var body: some View {
+        Canvas { context, size in
+            let p = pixelSize
+            let centreX = size.width / 2
+
+            func pixel(_ col: Int, _ row: Int, _ colour: Color) {
+                let x = centreX + CGFloat(col) * p
+                let y = CGFloat(row) * p
+                context.fill(Path(CGRect(x: x, y: y, width: p, height: p)), with: .color(colour))
+            }
+
+            // Sparkle dots above head (row 0-1)
+            pixel(-1, 0, .white.opacity(0.5))
+            pixel(1, 0, .white.opacity(0.3))
+            pixel(0, 1, .white.opacity(0.4))
+            pixel(2, 1, .white.opacity(0.5))
+            pixel(-2, 1, .white.opacity(0.3))
+
+            // Head top (row 2)
+            for c in -2...1 { pixel(c, 2, bodyColour) }
+
+            // Head + ears (row 3)
+            pixel(-4, 3, bodyColour) // left ear
+            pixel(-3, 3, bodyColour)
+            for c in -2...1 { pixel(c, 3, bodyColour) }
+            pixel(2, 3, bodyColour)
+            pixel(3, 3, bodyColour)  // right ear
+
+            // Head with eyes (row 4)
+            pixel(-3, 4, bodyColour) // left ear
+            for c in -2...1 { pixel(c, 4, bodyColour) }
+            pixel(2, 4, bodyColour)  // right ear
+            // Eyes
+            pixel(-1, 4, darkColour)
+            pixel(0, 4, darkColour)
+
+            // Body (row 5)
+            for c in -2...1 { pixel(c, 5, bodyColour) }
+
+            // Body with nose (row 6)
+            for c in -2...1 { pixel(c, 6, bodyColour) }
+            pixel(-1, 6, bodyColour.opacity(0.7))
+            pixel(0, 6, bodyColour.opacity(0.7))
+
+            // Legs (row 7)
+            pixel(-2, 7, bodyColour)
+            pixel(-1, 7, bodyColour)
+            pixel(0, 7, bodyColour)
+            pixel(1, 7, bodyColour)
+
+            // Feet (row 8)
+            pixel(-2, 8, bodyColour)
+            pixel(1, 8, bodyColour)
+        }
+        .frame(width: pixelSize * 8, height: pixelSize * 9)
+    }
+}
+
 // MARK: - Widget Views
 
 struct SmallWidgetView: View {
     let entry: UsageEntry
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 6) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 14, weight: .semibold))
-                Text("Claude")
-                    .font(.system(size: 14, weight: .semibold))
+        ZStack {
+            Rectangle().fill(entry.status.colour.gradient)
+
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 6) {
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 13, weight: .semibold))
+                    Text("Claude")
+                        .font(.system(size: 13, weight: .semibold))
+                }
+                .foregroundStyle(.white.opacity(0.85))
+
+                Spacer()
+
+                HStack {
+                    Spacer()
+                    ClaudeMascot(pixelSize: 5)
+                        .opacity(0.6)
+                    Spacer()
+                }
+
+                Spacer()
+
+                Text(entry.status.label)
+                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                    .foregroundStyle(.white)
+
+                Text(entry.status.subtitle)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(.white.opacity(0.7))
             }
-            .foregroundStyle(.white.opacity(0.85))
-
-            Spacer()
-
-            Text(entry.status.label)
-                .font(.system(size: 22, weight: .bold, design: .rounded))
-                .foregroundStyle(.white)
-
-            Text(entry.status.subtitle)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.white.opacity(0.7))
+            .padding(14)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .containerBackground(entry.status.colour.gradient, for: .widget)
+        .containerBackground(.clear, for: .widget)
     }
 }
 
@@ -210,42 +288,49 @@ struct MediumWidgetView: View {
     }
 
     var body: some View {
-        HStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 6) {
-                    Image(systemName: "sparkles")
-                        .font(.system(size: 14, weight: .semibold))
-                    Text("Claude")
-                        .font(.system(size: 14, weight: .semibold))
+        ZStack {
+            Rectangle().fill(entry.status.colour.gradient)
+
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 13, weight: .semibold))
+                        Text("Claude")
+                            .font(.system(size: 13, weight: .semibold))
+                    }
+                    .foregroundStyle(.white.opacity(0.85))
+
+                    Spacer()
+
+                    Text(entry.status.label)
+                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
+
+                    Text(entry.status.subtitle)
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.7))
                 }
-                .foregroundStyle(.white.opacity(0.85))
 
                 Spacer()
 
-                Text(entry.status.label)
-                    .font(.system(size: 24, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
+                VStack(spacing: 8) {
+                    ClaudeMascot(pixelSize: 5)
+                        .opacity(0.6)
 
-                Text(entry.status.subtitle)
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.7))
+                    Spacer()
+
+                    Text("Changes in")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.6))
+                    Text(nextChangeDescription)
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
+                }
             }
-
-            Spacer()
-
-            VStack(alignment: .trailing, spacing: 4) {
-                Spacer()
-
-                Text("Changes in")
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.6))
-                Text(nextChangeDescription)
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
-            }
+            .padding(14)
         }
-        .padding()
-        .containerBackground(entry.status.colour.gradient, for: .widget)
+        .containerBackground(.clear, for: .widget)
     }
 }
 
@@ -275,6 +360,7 @@ struct TwoTimesUsageWidget: Widget {
         .configurationDisplayName("Claude Usage")
         .description("Shows whether Claude is currently offering 2x usage.")
         .supportedFamilies([.systemSmall, .systemMedium])
+        .contentMarginsDisabled()
     }
 }
 
