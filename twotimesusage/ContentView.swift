@@ -106,7 +106,7 @@ struct ContentView: View {
                 )
                 .frame(width: 240, height: 240)
 
-            ClaudeMascot(pixelSize: 7)
+            ClaudeMascot(size: 98)
         }
     }
 

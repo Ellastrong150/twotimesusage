@@ -91,43 +91,78 @@ func nextChangeDate(from date: Date) -> Date {
     }
 }
 
-// MARK: - Claude Mascot
+// MARK: - Claude Mascot (SVG Path)
 
 struct ClaudeMascot: View {
-    let pixelSize: CGFloat
+    let size: CGFloat
 
     private let bodyColour = Color(red: 0.80, green: 0.55, blue: 0.40)
     private let eyeColour = Color(red: 0.15, green: 0.12, blue: 0.10)
 
-    // 14 columns x 11 rows
-    // 0 = empty, 1 = body, 2 = eye
-    // >< chevron eyes, moved closer to edges
-    private let grid: [[Int]] = [
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],  // head
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],  // head
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],  // head
-        [1,1,2,2,1,1,1,1,1,1,2,2,1,1],  // ears + eye top
-        [1,1,1,1,2,2,1,1,2,2,1,1,1,1],  // ears + eye point
-        [0,1,2,2,1,1,1,1,1,1,2,2,1,0],  // body + eye bottom
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],  // body
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],  // body
-        [0,1,1,0,1,1,0,0,1,1,0,1,1,0],  // 4 legs
-        [0,1,1,0,1,1,0,0,1,1,0,1,1,0],  // 4 legs
-        [0,1,1,0,1,1,0,0,1,1,0,1,1,0],  // 4 legs
-    ]
+    // The mascot is drawn on a 14x11 unit grid, scaled to fit `size` as the width.
+    // Body outline as a single path (ears, head, legs).
+    private var scaleFactor: CGFloat { size / 14 }
 
     var body: some View {
         Canvas { context, _ in
-            let p = pixelSize
-            for (row, cols) in grid.enumerated() {
-                for (col, val) in cols.enumerated() {
-                    guard val != 0 else { continue }
-                    let colour = val == 2 ? eyeColour : bodyColour
-                    let rect = CGRect(x: CGFloat(col) * p, y: CGFloat(row) * p, width: p, height: p)
-                    context.fill(Path(rect), with: .color(colour))
-                }
-            }
+            let s = scaleFactor
+
+            // Body outline path (clockwise from top-left of head)
+            var bodyPath = Path()
+            bodyPath.move(to: CGPoint(x: 1 * s, y: 0))
+            bodyPath.addLine(to: CGPoint(x: 13 * s, y: 0))        // top edge
+            bodyPath.addLine(to: CGPoint(x: 13 * s, y: 3 * s))    // right side down to ear
+            bodyPath.addLine(to: CGPoint(x: 14 * s, y: 3 * s))    // right ear out
+            bodyPath.addLine(to: CGPoint(x: 14 * s, y: 5 * s))    // right ear down
+            bodyPath.addLine(to: CGPoint(x: 13 * s, y: 5 * s))    // right ear in
+            bodyPath.addLine(to: CGPoint(x: 13 * s, y: 8 * s))    // right side down to legs
+            // Leg 4 (cols 11-12) — right edge continues from body
+            bodyPath.addLine(to: CGPoint(x: 13 * s, y: 11 * s))
+            bodyPath.addLine(to: CGPoint(x: 11 * s, y: 11 * s))
+            bodyPath.addLine(to: CGPoint(x: 11 * s, y: 8 * s))
+            // Gap col 10
+            bodyPath.addLine(to: CGPoint(x: 10 * s, y: 8 * s))
+            // Leg 3 (cols 8-9)
+            bodyPath.addLine(to: CGPoint(x: 10 * s, y: 11 * s))
+            bodyPath.addLine(to: CGPoint(x: 8 * s, y: 11 * s))
+            bodyPath.addLine(to: CGPoint(x: 8 * s, y: 8 * s))
+            // Gap cols 6-7
+            bodyPath.addLine(to: CGPoint(x: 6 * s, y: 8 * s))
+            // Leg 2 (cols 4-5)
+            bodyPath.addLine(to: CGPoint(x: 6 * s, y: 11 * s))
+            bodyPath.addLine(to: CGPoint(x: 4 * s, y: 11 * s))
+            bodyPath.addLine(to: CGPoint(x: 4 * s, y: 8 * s))
+            // Gap col 3
+            bodyPath.addLine(to: CGPoint(x: 3 * s, y: 8 * s))
+            // Leg 1 (cols 1-2)
+            bodyPath.addLine(to: CGPoint(x: 3 * s, y: 11 * s))
+            bodyPath.addLine(to: CGPoint(x: 1 * s, y: 11 * s))
+            bodyPath.addLine(to: CGPoint(x: 1 * s, y: 8 * s))
+            bodyPath.addLine(to: CGPoint(x: 1 * s, y: 5 * s))     // left side up to ear
+            bodyPath.addLine(to: CGPoint(x: 0, y: 5 * s))          // left ear out
+            bodyPath.addLine(to: CGPoint(x: 0, y: 3 * s))          // left ear up
+            bodyPath.addLine(to: CGPoint(x: 1 * s, y: 3 * s))     // left ear in
+            bodyPath.closeSubpath()
+
+            context.fill(bodyPath, with: .color(bodyColour))
+
+            // Chevron eyes: > on left, < on right
+            let eyeStroke: CGFloat = 0.7 * s
+            // Left eye >
+            var leftEye = Path()
+            leftEye.move(to: CGPoint(x: 3.5 * s, y: 3.8 * s))
+            leftEye.addLine(to: CGPoint(x: 4.5 * s, y: 4.5 * s))
+            leftEye.addLine(to: CGPoint(x: 3.5 * s, y: 5.2 * s))
+
+            // Right eye <
+            var rightEye = Path()
+            rightEye.move(to: CGPoint(x: 10.5 * s, y: 3.8 * s))
+            rightEye.addLine(to: CGPoint(x: 9.5 * s, y: 4.5 * s))
+            rightEye.addLine(to: CGPoint(x: 10.5 * s, y: 5.2 * s))
+
+            context.stroke(leftEye, with: .color(eyeColour), style: StrokeStyle(lineWidth: eyeStroke, lineCap: .square, lineJoin: .miter))
+            context.stroke(rightEye, with: .color(eyeColour), style: StrokeStyle(lineWidth: eyeStroke, lineCap: .square, lineJoin: .miter))
         }
-        .frame(width: pixelSize * 14, height: pixelSize * 11)
+        .frame(width: size, height: size / 14 * 11)
     }
 }
