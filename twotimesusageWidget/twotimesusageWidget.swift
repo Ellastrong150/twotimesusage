@@ -1,5 +1,6 @@
 import WidgetKit
 import SwiftUI
+import AppIntents
 
 // MARK: - Usage Status Logic
 
@@ -90,6 +91,13 @@ struct UsageTimelineProvider: TimelineProvider {
         // Start with current entry
         entries.append(UsageEntry(date: now, status: .current(at: now)))
 
+        // Add entries every 15 minutes for the next 2 hours so the countdown stays fresh
+        for minuteOffset in stride(from: 15, through: 120, by: 15) {
+            if let future = calendar.date(byAdding: .minute, value: minuteOffset, to: now) {
+                entries.append(UsageEntry(date: future, status: .current(at: future)))
+            }
+        }
+
         // Add entries at each transition point (12:00 UTC and 18:00 UTC) and midnight for weekday changes
         let transitionHours = [0, 12, 18]
         let currentComponents = calendar.dateComponents([.year, .month, .day, .hour], from: now)
@@ -112,7 +120,7 @@ struct UsageTimelineProvider: TimelineProvider {
         entries.sort { $0.date < $1.date }
 
         let timeline = Timeline(entries: entries, policy: .after(
-            calendar.date(byAdding: .minute, value: 15, to: now)!
+            calendar.date(byAdding: .hour, value: 2, to: now)!
         ))
         completion(timeline)
     }
@@ -248,6 +256,18 @@ func nextChangeDescription(at date: Date) -> String {
     return ""
 }
 
+// MARK: - Refresh Intent
+
+struct RefreshUsageIntent: AppIntent {
+    static var title: LocalizedStringResource = "Refresh Usage"
+    static var description: IntentDescription = "Refreshes the usage widget"
+
+    func perform() async throws -> some IntentResult {
+        WidgetCenter.shared.reloadAllTimelines()
+        return .result()
+    }
+}
+
 // MARK: - Widget Views
 
 struct SmallWidgetView: View {
@@ -263,6 +283,12 @@ struct SmallWidgetView: View {
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(.white.opacity(0.85))
                     Spacer()
+                    Button(intent: RefreshUsageIntent()) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(.white.opacity(0.5))
+                    }
+                    .buttonStyle(.plain)
                 }
 
                 Spacer()
@@ -303,32 +329,43 @@ struct MediumWidgetView: View {
         ZStack {
             Rectangle().fill(entry.status.backgroundGradient)
 
-            HStack(spacing: 16) {
-                VStack(alignment: .leading, spacing: 4) {
+            VStack {
+                HStack {
                     Text("Claude")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(.white.opacity(0.85))
-
                     Spacer()
-
-                    Text(entry.status.label)
-                        .font(.system(size: 24, weight: .bold, design: .rounded))
-                        .foregroundStyle(.white)
-
-                    HStack(spacing: 4) {
-                        Text("Changes in ~")
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundStyle(.white.opacity(0.6))
-                        Text(nextChangeDescription(at: entry.date))
-                            .font(.system(size: 13, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white.opacity(0.85))
+                    Button(intent: RefreshUsageIntent()) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(.white.opacity(0.5))
                     }
+                    .buttonStyle(.plain)
                 }
 
                 Spacer()
 
-                ClaudeMascot(size: 70)
-                    .opacity(0.5)
+                HStack(spacing: 16) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(entry.status.label)
+                            .font(.system(size: 24, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+
+                        HStack(spacing: 4) {
+                            Text("Changes in ~")
+                                .font(.system(size: 13, weight: .medium))
+                                .foregroundStyle(.white.opacity(0.6))
+                            Text(nextChangeDescription(at: entry.date))
+                                .font(.system(size: 13, weight: .bold, design: .rounded))
+                                .foregroundStyle(.white.opacity(0.85))
+                        }
+                    }
+
+                    Spacer()
+
+                    ClaudeMascot(size: 70)
+                        .opacity(0.5)
+                }
             }
             .padding(14)
         }
