@@ -295,8 +295,11 @@ struct SmallWidgetView: View {
 
                 Spacer()
 
-                ClaudeMascot(size: 56)
-                    .opacity(0.5)
+                Button(intent: RefreshUsageIntent()) {
+                    ClaudeMascot(size: 56)
+                        .opacity(0.5)
+                }
+                .buttonStyle(.plain)
 
                 Spacer()
 
@@ -305,6 +308,7 @@ struct SmallWidgetView: View {
                         Text(entry.status.label)
                             .font(.system(size: 20, weight: .bold, design: .rounded))
                             .foregroundStyle(.white)
+                            .invalidatableContent()
 
                         HStack(spacing: 4) {
                             Text("Changes in ~")
@@ -313,6 +317,7 @@ struct SmallWidgetView: View {
                             Text(nextChangeDescription(at: entry.date))
                                 .font(.system(size: 11, weight: .bold, design: .rounded))
                                 .foregroundStyle(.white.opacity(0.85))
+                                .invalidatableContent()
                         }
                     }
                     Spacer()
@@ -352,6 +357,7 @@ struct MediumWidgetView: View {
                         Text(entry.status.label)
                             .font(.system(size: 24, weight: .bold, design: .rounded))
                             .foregroundStyle(.white)
+                            .invalidatableContent()
 
                         HStack(spacing: 4) {
                             Text("Changes in ~")
@@ -360,13 +366,17 @@ struct MediumWidgetView: View {
                             Text(nextChangeDescription(at: entry.date))
                                 .font(.system(size: 13, weight: .bold, design: .rounded))
                                 .foregroundStyle(.white.opacity(0.85))
+                                .invalidatableContent()
                         }
                     }
 
                     Spacer()
 
-                    ClaudeMascot(size: 70)
-                        .opacity(0.5)
+                    Button(intent: RefreshUsageIntent()) {
+                        ClaudeMascot(size: 70)
+                            .opacity(0.5)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             .padding(14)
