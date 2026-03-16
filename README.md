@@ -1,5 +1,7 @@
 # twotimesusage
 
+> **Disclaimer:** This project is not affiliated with, endorsed by, or associated with Anthropic in any way. It is an independent, community-built tool.
+
 A simple iOS app and widget that tells you whether Claude is currently offering **2x usage** on your Anthropic subscription.
 
 Claude Pro and Team plans get double the usage allowance outside peak hours (weekdays 12:00-18:00 UTC) and on weekends. This app tracks that in real time so you always know the best time to use Claude.
@@ -40,8 +42,8 @@ Peak hours are also displayed in your local timezone within the app.
 
 ## Requirements
 
-- iOS 17.0+
-- Xcode 15.0+
+- iOS 26.0+
+- Xcode 26.0+
 
 ## Building
 
