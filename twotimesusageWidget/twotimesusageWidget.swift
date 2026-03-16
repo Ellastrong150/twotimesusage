@@ -62,6 +62,8 @@ enum UsageStatus {
             )
         }
     }
+
+    var isDouble: Bool { self == .doubleUsage }
 }
 
 // MARK: - Timeline
@@ -387,6 +389,96 @@ struct WidgetEntryView: View {
     }
 }
 
+// MARK: - Lock Screen Widgets
+
+struct CircularLockScreenView: View {
+    let entry: UsageEntry
+
+    var body: some View {
+        ZStack {
+            AccessoryWidgetBackground()
+
+            VStack(spacing: 1) {
+                Image(systemName: entry.status.isDouble ? "sparkles" : "clock")
+                    .font(.system(size: 14, weight: .bold))
+
+                Text(entry.status.isDouble ? "2x" : "1x")
+                    .font(.system(size: 12, weight: .heavy, design: .rounded))
+            }
+        }
+        .containerBackground(.clear, for: .widget)
+    }
+}
+
+struct RectangularLockScreenView: View {
+    let entry: UsageEntry
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: entry.status.isDouble ? "sparkles" : "clock")
+                .font(.system(size: 20, weight: .semibold))
+                .frame(width: 24)
+
+            VStack(alignment: .leading, spacing: 1) {
+                Text("Claude")
+                    .font(.system(size: 12, weight: .semibold))
+                    .widgetAccentable()
+
+                Text(entry.status.isDouble ? "2x Usage Active" : "Peak Hours")
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+
+                Text("Changes in ~\(nextChangeDescription(at: entry.date))")
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .containerBackground(.clear, for: .widget)
+    }
+}
+
+struct InlineLockScreenView: View {
+    let entry: UsageEntry
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "sparkles")
+            Text(entry.status.isDouble ? "Claude 2x Active" : "Claude Peak Hours")
+        }
+        .containerBackground(.clear, for: .widget)
+    }
+}
+
+// MARK: - Lock Screen Widget Definition
+
+struct LockScreenEntryView: View {
+    @Environment(\.widgetFamily) var family
+    let entry: UsageEntry
+
+    var body: some View {
+        switch family {
+        case .accessoryRectangular:
+            RectangularLockScreenView(entry: entry)
+        case .accessoryInline:
+            InlineLockScreenView(entry: entry)
+        default:
+            CircularLockScreenView(entry: entry)
+        }
+    }
+}
+
+struct LockScreenUsageWidget: Widget {
+    let kind = "twotimesusageLockScreenWidget"
+
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: UsageTimelineProvider()) { entry in
+            LockScreenEntryView(entry: entry)
+        }
+        .configurationDisplayName("Claude Usage")
+        .description("Shows Claude usage status on the lock screen.")
+        .supportedFamilies([.accessoryCircular, .accessoryRectangular, .accessoryInline])
+    }
+}
+
 // MARK: - Widget Definition
 
 struct TwoTimesUsageWidget: Widget {
@@ -409,6 +501,7 @@ struct TwoTimesUsageWidget: Widget {
 struct TwoTimesUsageWidgetBundle: WidgetBundle {
     var body: some Widget {
         TwoTimesUsageWidget()
+        LockScreenUsageWidget()
     }
 }
 
@@ -428,6 +521,24 @@ struct TwoTimesUsageWidgetBundle: WidgetBundle {
 
 #Preview("Medium - 2x", as: .systemMedium) {
     TwoTimesUsageWidget()
+} timeline: {
+    UsageEntry(date: .now, status: .doubleUsage)
+}
+
+#Preview("Circular - 2x", as: .accessoryCircular) {
+    LockScreenUsageWidget()
+} timeline: {
+    UsageEntry(date: .now, status: .doubleUsage)
+}
+
+#Preview("Rectangular - 2x", as: .accessoryRectangular) {
+    LockScreenUsageWidget()
+} timeline: {
+    UsageEntry(date: .now, status: .doubleUsage)
+}
+
+#Preview("Inline - 2x", as: .accessoryInline) {
+    LockScreenUsageWidget()
 } timeline: {
     UsageEntry(date: .now, status: .doubleUsage)
 }
